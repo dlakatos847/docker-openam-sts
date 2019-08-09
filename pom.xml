@@ -1,0 +1,76 @@
+<?xml version="1.0"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+
+  <parent>
+    <groupId>com.greatit</groupId>
+    <artifactId>maven-greatit-parent</artifactId>
+    <version>1</version>
+  </parent>
+
+  <artifactId>docker-openam-sts</artifactId>
+  <version>0.1.0</version>
+
+  <name>OpenAM STS Docker image</name>
+
+  <properties>
+    <project.java.version>1.8</project.java.version>
+    <openam.version>14.4.1</openam.version>
+    <docker-plugin.version>0.28.0</docker-plugin.version>
+  </properties>
+
+  <repositories>
+    <repository>
+      <id>greatit-public-release</id>
+      <url>https://great-it.ddns.net/maven-release-public</url>
+      <releases>
+        <enabled>true</enabled>
+      </releases>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+    </repository>
+  </repositories>
+
+  <build>
+    <pluginManagement>
+      <plugins>
+        <plugin>
+          <artifactId>maven-compiler-plugin</artifactId>
+          <configuration>
+            <source>${project.java.version}</source>
+            <target>${project.java.version}</target>
+            <encoding>${project.build.sourceEncoding}</encoding>
+          </configuration>
+        </plugin>
+      </plugins>
+    </pluginManagement>
+    <plugins>
+      <plugin>
+        <groupId>io.fabric8</groupId>
+        <artifactId>docker-maven-plugin</artifactId>
+        <version>${docker-plugin.version}</version>
+        <configuration>
+          <images>
+            <image>
+	          <name>greatit/openam-sts:${openam.version}</name>
+              <build>
+                <dockerFile>Dockerfile</dockerFile>
+                <args>
+                  <OPENAM_VERSION>${openam.version}</OPENAM_VERSION>
+                </args>
+              </build>
+            </image>
+          </images>
+        </configuration>
+        <executions>
+          <execution>
+            <goals>
+              <goal>build</goal>
+            </goals>
+          </execution>
+        </executions>
+      </plugin>
+    </plugins>
+  </build>
+</project>
